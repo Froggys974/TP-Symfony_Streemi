@@ -27,10 +27,10 @@ class User
     private ?string $password = null;
 
     #[ORM\Column(enumType: UserAccountStatusEnum::class)]
-    private ?UserAccountStatusEnum $accountStatus = null;
+    private ?UserAccountStatusEnum $accountStatus = UserAccountStatusEnum::ACTIVE;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
-    private ?PlaylistSubscriptions $currentSubscription = null;
+    private ?Subscription $currentSubscription = null;
 
     /**
      * @var Collection<int, Playlist>
@@ -123,12 +123,12 @@ class User
         return $this;
     }
 
-    public function getCurrentSubscription(): ?PlaylistSubscriptions
+    public function getCurrentSubscription(): ?Subscription
     {
         return $this->currentSubscription;
     }
 
-    public function setCurrentSubscription(?PlaylistSubscriptions $currentSubscription): static
+    public function setCurrentSubscription(?Subscription $currentSubscription): static
     {
         $this->currentSubscription = $currentSubscription;
 
