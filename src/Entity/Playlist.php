@@ -34,9 +34,11 @@ class Playlist
     #[ORM\OneToMany(targetEntity: PlaylistSubscription::class, mappedBy: 'playlist')]
     private Collection $playlistSubscriptions;
 
-    #[ORM\ManyToOne(inversedBy: 'playlist')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?PlaylistMedia $playlistMedia = null;
+   /**
+     * @var Collection<int, PlaylistMedia>
+     */
+    #[ORM\OneToMany(targetEntity: PlaylistMedia::class, mappedBy: 'playlist')]
+    private Collection $playlistMedia;
 
     public function __construct()
     {
@@ -126,14 +128,32 @@ class Playlist
         return $this;
     }
 
-    public function getPlaylistMedia(): ?PlaylistMedia
+    /**
+     * @return Collection<int, PlaylistMedia>
+     */
+    public function getPlaylistMedia(): Collection
     {
         return $this->playlistMedia;
     }
 
-    public function setPlaylistMedia(?PlaylistMedia $playlistMedia): static
+    public function addPlaylistMedium(PlaylistMedia $playlistMedium): static
     {
-        $this->playlistMedia = $playlistMedia;
+        if (!$this->playlistMedia->contains($playlistMedium)) {
+            $this->playlistMedia->add($playlistMedium);
+            $playlistMedium->setPlaylist($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlaylistMedium(PlaylistMedia $playlistMedium): static
+    {
+        if ($this->playlistMedia->removeElement($playlistMedium)) {
+            // set the owning side to null (unless already changed)
+            if ($playlistMedium->getPlaylist() === $this) {
+                $playlistMedium->setPlaylist(null);
+            }
+        }
 
         return $this;
     }

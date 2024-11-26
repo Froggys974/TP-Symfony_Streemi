@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\PlaylistMediaRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PlaylistMediaRepository::class)]
@@ -18,23 +16,13 @@ class PlaylistMedia
     #[ORM\Column]
     private ?\DateTimeImmutable $addedAt = null;
 
-    /**
-     * @var Collection<int, Playlist>
-     */
-    #[ORM\OneToMany(targetEntity: Playlist::class, mappedBy: 'playlistMedia')]
-    private Collection $playlist;
+    #[ORM\ManyToOne(inversedBy: 'playlistMedia')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Playlist $playlist = null;
 
-    /**
-     * @var Collection<int, Media>
-     */
-    #[ORM\OneToMany(targetEntity: Media::class, mappedBy: 'playlistMedia')]
-    private Collection $media;
-
-    public function __construct()
-    {
-        $this->playlist = new ArrayCollection();
-        $this->media = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'playlistMedia')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Media $media = null;
 
     public function getId(): ?int
     {
@@ -53,62 +41,26 @@ class PlaylistMedia
         return $this;
     }
 
-    /**
-     * @return Collection<int, Playlist>
-     */
-    public function getPlaylist(): Collection
+    public function getPlaylist(): ?Playlist
     {
         return $this->playlist;
     }
 
-    public function addPlaylist(Playlist $playlist): static
+    public function setPlaylist(?Playlist $playlist): static
     {
-        if (!$this->playlist->contains($playlist)) {
-            $this->playlist->add($playlist);
-            $playlist->setPlaylistMedia($this);
-        }
+        $this->playlist = $playlist;
 
         return $this;
     }
 
-    public function removePlaylist(Playlist $playlist): static
-    {
-        if ($this->playlist->removeElement($playlist)) {
-            // set the owning side to null (unless already changed)
-            if ($playlist->getPlaylistMedia() === $this) {
-                $playlist->setPlaylistMedia(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Media>
-     */
-    public function getMedia(): Collection
+    public function getMedia(): ?Media
     {
         return $this->media;
     }
 
-    public function addMedium(Media $medium): static
+    public function setMedia(?Media $media): static
     {
-        if (!$this->media->contains($medium)) {
-            $this->media->add($medium);
-            $medium->setPlaylistMedia($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMedium(Media $medium): static
-    {
-        if ($this->media->removeElement($medium)) {
-            // set the owning side to null (unless already changed)
-            if ($medium->getPlaylistMedia() === $this) {
-                $medium->setPlaylistMedia(null);
-            }
-        }
+        $this->media = $media;
 
         return $this;
     }

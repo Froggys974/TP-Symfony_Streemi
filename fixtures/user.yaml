@@ -1,0 +1,16 @@
+App\Entity\User:
+  admin:
+    username: admin_user
+    email: admin@example.com
+    password: <password()> 
+
+  user_{1..50}:
+    username: <name()>
+    email: <email()>
+    password: <password()>
+
+  user_with_subscription_{1..10}:
+    username: <name()>
+    email: <email()>
+    password: <password()>
+    currentSubscription: '@subscription_*'
