@@ -58,8 +58,11 @@ class Media
     #[ORM\OneToMany(targetEntity: WatchHistory::class, mappedBy: 'media')]
     private Collection $watchHistories;
 
-    #[ORM\ManyToOne(inversedBy: 'media')]
-    private ?PlaylistMedia $playlistMedia = null;
+    /**
+     * @var Collection<int, PlaylistMedia>
+     */
+    #[ORM\OneToMany(targetEntity: PlaylistMedia::class, mappedBy: 'media')]
+    private Collection $playlistMedia;
 
     /**
      * @var Collection<int, Category>
@@ -79,6 +82,7 @@ class Media
         $this->watchHistories = new ArrayCollection();
         $this->categoryMedia = new ArrayCollection();
         $this->category = new ArrayCollection();
+        $this->playlistMedia = new ArrayCollection();
         $this->language = new ArrayCollection();
     }
 
@@ -229,14 +233,32 @@ class Media
 
         return $this;
     }
-    public function getPlaylistMedia(): ?PlaylistMedia
+    /**
+     * @return Collection<int, PlaylistMedia>
+     */
+    public function getPlaylistMedia(): Collection
     {
         return $this->playlistMedia;
     }
 
-    public function setPlaylistMedia(?PlaylistMedia $playlistMedia): static
+    public function addPlaylistMedia(PlaylistMedia $playlistMedia): static
     {
-        $this->playlistMedia = $playlistMedia;
+        if (!$this->playlistMedia->contains($playlistMedia)) {
+            $this->playlistMedia->add($playlistMedia);
+            $playlistMedia->setMedia($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlaylistMedia(PlaylistMedia $playlistMedia): static
+    {
+        if ($this->playlistMedia->removeElement($playlistMedia)) {
+            // set the owning side to null (unless already changed)
+            if ($playlistMedia->getMedia() === $this) {
+                $playlistMedia->setMedia(null);
+            }
+        }
 
         return $this;
     }

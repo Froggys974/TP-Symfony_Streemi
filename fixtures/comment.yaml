@@ -1,0 +1,13 @@
+App\Entity\Comment:
+  comment_{1..250}:
+    content: "<sentence()>"
+    statusEnum: !php/const \App\Enum\CommentStatusEnum::PUBLISH
+    user: "@user_*"
+    media: "@media_*"
+
+  comment_with_parent_{1..30}:
+    content: "<sentence()>"
+    statusEnum: !php/const \App\Enum\CommentStatusEnum::PUBLISH
+    user: "@user_*"
+    media: "@media_*"
+    parentComment: "@comment_*"
