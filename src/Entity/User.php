@@ -7,10 +7,11 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User
+class User implements UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -62,13 +63,33 @@ class User
     #[ORM\OneToMany(targetEntity: SubscriptionHistory::class, mappedBy: 'user')]
     private Collection $subscriptionHistories;
 
+    #[ORM\Column]
+    private array $roles = [];
+
     public function __construct()
     {
         $this->playlists = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->watchHistories = new ArrayCollection();
         $this->subscriptionHistories = new ArrayCollection();
+        
     }
+
+    public function eraseCredentials(): void
+        {
+            // If you store any temporary, sensitive data on the user, clear it here
+            // $this->plainPassword = null;
+        }
+    
+        public function getRoles(): array
+        {
+            return ['ROLE_USER'];
+        }
+    
+        public function getUserIdentifier(): string
+        {
+            return $this->email;
+        }
 
     public function getId(): ?int
     {
@@ -250,6 +271,13 @@ class User
                 $subscriptionHistory->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
 
         return $this;
     }
