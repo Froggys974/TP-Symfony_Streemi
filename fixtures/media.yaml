@@ -4,9 +4,15 @@ App\Entity\Media:
     longDescription: "long description <current()>"
     releaseDate: "<dateTimeBetween('-1 week','+1 week')>"
     coverImage: "https://picsum.photos/300/400?random=<current()>"
-    category:
+    category: 
       - "@category_action"
       - "@category_aventure"
+      - "@category_comedie"
+      - "@category_drame"
+      - "@category_fantastique"
+      - "@category_horreur"
+      - "@category_romance"
+      
     language:
       - "@lang_fr"
       - "@lang_en"
