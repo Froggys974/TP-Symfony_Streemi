@@ -18,7 +18,7 @@ class WatchHistory
     private ?\DateTimeInterface $lastWatched = null;
 
     #[ORM\Column]
-    private ?int $numberOfViews = null;
+    private ?int $numberOfViews;
 
     #[ORM\ManyToOne(inversedBy: 'watchHistories')]
     #[ORM\JoinColumn(nullable: false)]

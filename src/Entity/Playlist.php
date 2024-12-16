@@ -24,7 +24,7 @@ class Playlist
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'playlists')]
+    #[ORM\ManyToOne(inversedBy: 'playlist')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 

@@ -15,15 +15,14 @@ security:
             security: false
         main:
             lazy: true
-            provider: users_in_memory
+            provider: users_in_database
             form_login:
                 login_path: app_login
                 check_path: app_login
-                enable_csrf: true
+                default_target_path: app_home_page
             logout:
                 path: app_logout
-                # where to redirect after logout
-                # target: app_any_route
+                target: app_login
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER
         ROLE_SUPER_ADMIN: ROLE_ADMIN
