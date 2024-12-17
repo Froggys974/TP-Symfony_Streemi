@@ -4,6 +4,7 @@ App\Entity\Media:
     longDescription: "long description <current()>"
     releaseDate: "<dateTimeBetween('-1 week','+1 week')>"
     coverImage: "https://picsum.photos/300/400?random=<current()>"
+    duration: 120
     category: 
       - "@category_action"
       - "@category_aventure"

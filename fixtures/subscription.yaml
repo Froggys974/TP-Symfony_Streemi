@@ -2,22 +2,27 @@ App\Entity\Subscription:
   subscription_basic:
     name: 'Basic Plan'
     price: 500
+    details: 'Basic Plan'
     duration: 1
   subscription_standard:
     name: 'Standard Plan'
     price: 1500
+    details: 'Basic Plan'
     duration: 3
   subscription_premium:
     name: 'Premium Plan'
     price: 3000
+    details: 'Basic Plan'
     duration: 6
   subscription_annual:
     name: 'Annual Plan'
     price: 10000
+    details: 'Basic Plan'
     duration: 12
   subscription_family:
     name: 'Family Plan'
     price: 20000
+    details: 'Basic Plan'
     duration: 12
 
 App\Entity\SubscriptionHistory:

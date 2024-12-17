@@ -41,11 +41,9 @@ class AppFixtures extends Fixture
     public const MAX_COMMENTS_PER_MEDIA = 10;
     public const MAX_PLAYLIST_SUBSCRIPTION_PER_USERS = 3;
 
-    private $passwordHasher;
 
-    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    public function __construct()
     {
-        $this->passwordHasher = $passwordHasher;
     }
 
     public function load(ObjectManager $manager): void
@@ -77,8 +75,7 @@ class AppFixtures extends Fixture
         $userAdmin->setUsername('admin');
         $userAdmin->setEmail('admin@example.com');
         $userAdmin->setStatus(UserAccountStatusEnum::ACTIVE);
-        $hashedPassword = $this->passwordHasher->hashPassword($userAdmin, 'adminpassword');
-        $userAdmin->setPassword($hashedPassword);
+        $userAdmin->setPlainPassword('adminpassword');
         $userAdmin->addRole('ROLE_ADMIN');
         $manager->persist($userAdmin);
         $users[] = $userAdmin;
@@ -87,9 +84,8 @@ class AppFixtures extends Fixture
             $user = new User();
             $user->setUsername($faker->userName);
             $user->setEmail($faker->email);
-            $user->setStatus(UserAccountStatusEnum::ACTIVE);
-            $hashedPassword = $this->passwordHasher->hashPassword($user, 'password');
-            $user->setPassword($hashedPassword);
+            $user->setStatus(status: UserAccountStatusEnum::ACTIVE);
+            $user->setPlainPassword($faker->password);
             $manager->persist($user);
             $users[] = $user;
         }

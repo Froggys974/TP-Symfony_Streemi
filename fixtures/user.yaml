@@ -2,18 +2,23 @@ App\Entity\User:
   admin:
     username: admin_user
     email: admin@example.com
-    password: <password()> 
+    plainPassword: test
     roles: ['ROLE_ADMIN']
+    status: 'active'
+
 
   user_{1..50}:
     username: <name()>
     email: <email()>
-    password: <password()>
+    plainPassword: <password()>
     roles: ['ROLE_USER']
+    status: 'active'
 
   user_with_subscription_{1..10}:
     username: <name()>
     email: <email()>
-    password: <password()>
+    plainPassword: <password()>
     currentSubscription: '@subscription_*'
     roles: ['ROLE_USER']
+    status: 'active'
+
