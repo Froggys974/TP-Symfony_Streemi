@@ -17,7 +17,6 @@ class SubscriptionController extends AbstractController
     {
         $subscriptions = $subscriptionRepository->findAll();
         $user = $security->getUser();
-        dump($user);
         $userSubscription = $user?->getCurrentSubscription();
 
         return $this->render('other/abonnements.html.twig', [
