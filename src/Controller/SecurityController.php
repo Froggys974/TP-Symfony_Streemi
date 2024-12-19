@@ -110,7 +110,6 @@ class SecurityController extends AbstractController
                 $this->addFlash('error', 'Les mots de passe ne correspondent pas.');
                 return $this->redirectToRoute('auth_reset', ['token' => $token]);
             }
-            dump($newPassword);
             $hashedPassword = $passwordHasher->hashPassword($user, $newPassword);
             $user->setPassword($hashedPassword);
             $user->setResetToken(null);
